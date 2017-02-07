@@ -1,14 +1,12 @@
 {
-  "name": "tpl-scaffold",
+  "name": "minitpl",
   "version": "1.0.0",
   "description": "A scaffold to generate the template",
   "main": "index.js",
   "bin": {
     "minitpl": "./bin/minitpl"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hooyu-FE/minitpl.git"
@@ -22,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/Hooyu-FE/minitpl/issues"
   },
-  "homepage": "https://github.com/Hooyu-FE/minitpl#readme"
+  "homepage": "https://github.com/Hooyu-FE/minitpl#readme",
+  "devDependencies": {
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.9.0"
+  }
 }
