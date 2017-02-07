@@ -1,0 +1,13 @@
+@import "../../../../../common/asserts/sass/base.scss";
+@import "../../../../../common/asserts/sass/common.scss";
+html, body {
+  margin: 0;
+  width: 100%;
+  background: #210045;
+  font-family: miui,PingFang, PingHei,San Francisco, MILanTing, '小米兰亭', '微软雅黑', DeliciousRoman, sans-serif;
+}
+::-webkit-scrollbar {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}

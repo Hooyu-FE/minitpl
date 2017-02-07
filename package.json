@@ -1,0 +1,23 @@
+{
+  "name": "tpl-scaffold",
+  "version": "1.0.0",
+  "description": "A scaffold to generate the template",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hooyu-FE/tpl-scaffold.git"
+  },
+  "keywords": [
+    "scaffold",
+    "tool"
+  ],
+  "author": "yiwei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hooyu-FE/tpl-scaffold/issues"
+  },
+  "homepage": "https://github.com/Hooyu-FE/tpl-scaffold#readme"
+}
