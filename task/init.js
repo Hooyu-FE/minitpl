@@ -8,5 +8,6 @@ const prompt = require('co-prompt');
 module.exports = (project) => {
     co(function *() {
         let answer = yield prompt('[?]确定项目名称为' + project + '(yes/no):');
+
     });
 };
