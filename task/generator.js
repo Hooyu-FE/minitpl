@@ -3,5 +3,5 @@
  * @todo start generator project
  */
 module.exports = (project) => {
-    
+
 };
