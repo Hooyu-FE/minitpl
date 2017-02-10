@@ -22,7 +22,7 @@ module.exports = (_projectName) => {
                 }
             });
         } else {
-            require('./generator')(project || _projectName);
+            require('./generator').gen(project || _projectName);
         }
     })
 };
