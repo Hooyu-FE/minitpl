@@ -1,2 +1,3 @@
-# tpl-scaffold
-活动快速模版生成器
+# minitpl
+
+[![Build Status](https://travis-ci.org/Hooyu-FE/minitpl.svg?branch=master)](https://travis-ci.org/Hooyu-FE/minitpl)
