@@ -14,7 +14,8 @@ let cb = (err) => {
 };
 
 module.exports = {
-    gen: (project) => {
+    gen: (project, templates) => {
+        console.log(templates);
         exec('mkdir ' + project, (err, stdout, stderr) => {
             if (err) process.exit(-1);
             co(require('./copy')(path.join(process.cwd(), 'minitpl/template'), path.join(process.cwd(), project), cb));
