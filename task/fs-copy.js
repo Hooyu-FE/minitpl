@@ -6,6 +6,8 @@
 const path = require('path');
 const co = require('co');
 const fs = require('fs');
+const log = require('./util/log');
+
 module.exports = (src, dist, cb) => {
     let _src = src,
         _dist = dist;
@@ -97,6 +99,8 @@ module.exports = (src, dist, cb) => {
         let paths = yield readDir(__src);
         let stats = yield stat(paths, __src, __dist);
         yield stats.map(copy);
+        let __dir = src.split(path.sep);
+        log('success', 'Init ' + __dir[__dir.length-1] + ' success!');
     };
 
     co(gen);

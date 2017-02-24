@@ -8,17 +8,19 @@ const path = require('path');
 const exec = child_process.exec;
 const co = require('co');
 const fs = require('fs');
+const log = require('./util/log');
 
 let cb = (err) => {
-    throw err;
+    log('error', err);
+    process.exit(-1)
 };
 
 module.exports = {
     gen: (project, templates) => {
-        console.log(templates);
+        log('progress', 'Start generator ' + project);
         exec('mkdir ' + project, (err, stdout, stderr) => {
-            if (err) process.exit(-1);
-            co(require('./copy')(path.join(process.cwd(), 'minitpl/template'), path.join(process.cwd(), project), cb));
+            if (err) cb(err);
+            co(require('./fs-copy')(path.join(path.dirname(__dirname), 'template'), path.join(process.cwd(), project), cb));
         });
     }
 };

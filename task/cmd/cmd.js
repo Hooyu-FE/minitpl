@@ -14,7 +14,7 @@ program
     .description('Init a project in current folder')
     .alias('i')
     .action((projectName) => {
-        require('../prompt')(projectName || 'newproject')
+        require('./prompt')(projectName || 'newproject')
     });
 
 program.parse(process.argv);

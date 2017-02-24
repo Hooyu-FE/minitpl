@@ -5,6 +5,11 @@
 'use strict';
 const co = require('co');
 const inquirer = require('inquirer');
+const chalk = require('chalk');
+const fs = require('fs');
+const path = require('path');
+const log = require('../util/log');
+
 
 const PROMPTS = [
     { // 项目类型
@@ -29,7 +34,7 @@ const PROMPTS = [
     { // 输入新的活动名称
         type: 'input',
         name: 'newActName',
-        message: '请重新输入项目名称:'
+        message: '请重新输入活动名称:'
     },
     { // 输入页面名称
         type: 'input',
@@ -49,6 +54,18 @@ module.exports = (projectName) => {
     };
 
     /**
+     * invoke module `generator`
+     */
+    let generator = function (templates) {
+        if (!!fs.existsSync(path.join(process.cwd(), _projectName))) {
+            log('warn', '当前目录已存在' +  _projectName);
+            process.exit(-1);
+        } else {
+            require('../index').gen(_projectName, templates);
+        }
+    };
+
+    /**
      * Get act type
      * @param type
      */
@@ -56,10 +73,13 @@ module.exports = (projectName) => {
         let tpl = null;
         if (type == 'multi-page') {
             tpl = yield _prompt(PROMPTS[3]);
+            if (!tpl.templates) {
+                yield* getActType('multi-page');
+            }
         } else {
             tpl = {templates: 'index'};
         }
-        require('./generator').gen(_projectName, tpl.templates.slice(','));
+        generator(tpl.templates.slice(','));
     };
 
 
@@ -69,7 +89,7 @@ module.exports = (projectName) => {
      */
     let prompt = function* (name) {
         _projectName = name || _projectName;
-        let confirmActName = yield _prompt(Object.assign(PROMPTS[1], {message: '确定项目名称为' + _projectName + ':'}));
+        let confirmActName = yield _prompt(Object.assign(PROMPTS[1], {message: '活动名称确定为' + _projectName + ':'}));
         let actType = null;
         let reInput = null;
         if (!!confirmActName.actName) {
