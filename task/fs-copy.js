@@ -6,10 +6,20 @@
 const path = require('path');
 const co = require('co');
 const fs = require('fs');
-const log = require('./util/log');
+const util = require('./util/util');
+var writeLineStream = require('lei-stream').writeLine;
 
-module.exports = (src, dist, cb) => {
+/**
+ * file operating
+ * @param src
+ * @param dist
+ * @param templates
+ * @param type
+ */
+module.exports = (src, dist, templates, type) => {
     let _src = src,
+        _type = type,
+        _templates = templates,
         _dist = dist;
 
 
@@ -73,13 +83,51 @@ module.exports = (src, dist, cb) => {
 
 
     /**
+     * rewrite chunk.config.json file
+     * @param dest
+     * @param tpls
+     */
+    let reWriteChunkConfig = (dest, tpls) => {
+        let data = {
+            jsChunk: {},
+            htmlChunk: {},
+            publicPath: {
+                pro: "http://activity.zb.mi.com/live/",
+                staging: ""
+            }
+        };
+        tpls.forEach((tpl, index) => {
+            data.jsChunk[tpl] = path.join('asserts/js/', tpl + '.js');
+            data.htmlChunk[tpl] = {
+                template: tpl + '.html',
+                chunks: [tpl]
+            };
+        });
+        var writeStream = writeLineStream(fs.createWriteStream(dest));
+        writeStream.write(JSON.stringify(data, null, 2));
+        writeStream.end(() => {
+            util.log('success', 'Init ' + path.parse(dest).base + ' success!');
+        });
+    };
+
+
+    /**
      * Start copy
      * @param item
      */
     let copy = function* (item){
         let exits = yield access(item.dist);
         if (item.stat.isFile()) {
-            fs.createReadStream(item.src).pipe(fs.createWriteStream(item.dist));
+            let parseSrc = path.parse(item.src);
+            if (_type == 'multi-page' && /chunk.config.json/g.test(parseSrc.base)) {
+                reWriteChunkConfig(item.dist, _templates);
+            } else {
+                let writeStream = fs.createWriteStream(item.dist);
+                fs.createReadStream(item.src).pipe(writeStream);
+                writeStream.on('close', () => {
+                    util.log('success', 'Init ' + parseSrc.base + ' success!');
+                });
+            }
         } else if (item.stat.isDirectory()) {
             if (!exits) {
                 fs.mkdirSync(item.dist);
@@ -100,7 +148,7 @@ module.exports = (src, dist, cb) => {
         let stats = yield stat(paths, __src, __dist);
         yield stats.map(copy);
         let __dir = src.split(path.sep);
-        log('success', 'Init ' + __dir[__dir.length-1] + ' success!');
+        util.log('success', 'Init ' +  __dir[__dir.length-1] + ' success!');
     };
 
     co(gen);

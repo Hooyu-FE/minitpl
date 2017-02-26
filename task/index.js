@@ -8,19 +8,25 @@ const path = require('path');
 const exec = child_process.exec;
 const co = require('co');
 const fs = require('fs');
-const log = require('./util/log');
+const util = require('./util/util');
 
 let cb = (err) => {
-    log('error', err);
+    util.log('error', err);
     process.exit(-1)
 };
 
 module.exports = {
-    gen: (project, templates) => {
-        log('progress', 'Start generator ' + project);
+    /**
+     * mkdir project root dir
+     * @param project [project name]
+     * @param templates [templates array]
+     * @param type [act type]
+     */
+    gen: (project, templates, type) => {
+        util.log('progress', 'Start generator ' + project);
         exec('mkdir ' + project, (err, stdout, stderr) => {
             if (err) cb(err);
-            co(require('./fs-copy')(path.join(path.dirname(__dirname), 'template'), path.join(process.cwd(), project), cb));
+            co(require('./fs-copy')(path.join(path.dirname(__dirname), 'template'), path.join(process.cwd(), project), templates, type));
         });
     }
 };

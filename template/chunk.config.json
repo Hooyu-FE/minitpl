@@ -1,0 +1,15 @@
+{
+  "jsChunk": {
+    "index": "asserts/js/index.js"
+  },
+  "htmlChunk": {
+    "index": {
+      "template": "index.html",
+      "chunks": ["index"]
+    }
+  },
+  "publicPath": {
+    "pro": "http://activity.zb.mi.com/live/",
+    "staging": ""
+  }
+}

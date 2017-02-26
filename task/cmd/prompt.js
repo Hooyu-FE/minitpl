@@ -8,7 +8,7 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
-const log = require('../util/log');
+const util = require('../util/util');
 
 
 const PROMPTS = [
@@ -56,12 +56,12 @@ module.exports = (projectName) => {
     /**
      * invoke module `generator`
      */
-    let generator = function (templates) {
+    let generator = function (templates, type) {
         if (!!fs.existsSync(path.join(process.cwd(), _projectName))) {
-            log('warn', '当前目录已存在' +  _projectName);
+            util.log('warn', '当前目录已存在' +  _projectName);
             process.exit(-1);
         } else {
-            require('../index').gen(_projectName, templates);
+            require('../index').gen(_projectName, templates, type);
         }
     };
 
@@ -79,7 +79,16 @@ module.exports = (projectName) => {
         } else {
             tpl = {templates: 'index'};
         }
-        generator(tpl.templates.slice(','));
+        if (!!tpl.templates) {
+            let tpls = tpl.templates.split(',');
+            let _isRepeated = util.isRepeated(tpls);
+            if (_isRepeated.isRepeated) {
+                util.log('warn', '输入了两个相同名称的模版：' + _isRepeated.key);
+                yield* getActType('multi-page');
+            } else {
+                generator(tpl.templates.split(','), type);
+            }
+        }
     };
 
 
